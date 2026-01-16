@@ -3,13 +3,37 @@ import os
 import requests
 import re
 
+def download_image(url, path):
+    pass
+
 
 def spider( depth,  path,  recursive,  url):
     lol = requests.get(url)
     # print(lol.text)
     links = re.findall(r'href="(.*?)"', lol.text)
     for link in links:
-        print(link)
+        if(link .endswith(('.jpg', '.jpeg', '.png', '.gif'))):
+            print("image",link)
+            # img_data = requests.get(link).content
+            # if not os.path.exists(path):
+            #     os.makedirs(path)
+            # with open(os.path.join(path, link.split("/")[-1]), 'wb') as handler:
+            #     handler.write(img_data)
+            # print(f"Downloaded: {link}")
+        else:
+            print("depth",depth)
+            if( recursive and depth>0):
+                print("link",link)
+                spider(depth, path, recursive, link)
+                depth -= 1
+            # if(recursive and depth>0):
+            #     if not link.startswith("http"):
+            #         if url.endswith("/"):
+            #             link = url + link
+            #         else:
+            #             link = url + "/" + link
+            #     spider(depth-1, path, recursive, link)
+        
     
 
 def main():
