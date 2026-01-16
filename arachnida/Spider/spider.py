@@ -1,7 +1,16 @@
 import argparse
+import os
+import requests
+import re
 
-def spider(int depth, str path, bool recursive, str url):
-    # Placeholder for the spider function implementation
+
+def spider( depth,  path,  recursive,  url):
+    lol = requests.get(url)
+    # print(lol.text)
+    links = re.findall(r'href="(.*?)"', lol.text)
+    for link in links:
+        print(link)
+    
 
 def main():
     parser = argparse.ArgumentParser(
@@ -47,10 +56,10 @@ def main():
         parser.error("-l can only be used with -r")
 
     # Debug
-    print("URL:", args.url)
-    print("Recursive:", args.r)
-    print("Depth:", args.l)
-    print("Path:", args.p)
-
+    # print("URL:", args.url)
+    # print("Recursive:", args.r)
+    # print("Depth:", args.l)
+    # print("Path:", args.p)
+    spider(args.l, args.p, args.r, args.url)
 if __name__ == "__main__":
     main()
