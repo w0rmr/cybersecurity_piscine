@@ -109,10 +109,6 @@ def spider_bfs(start_url, path, max_depth, recursive):
         current_level = next_level
         depth += 1
 
-
-
-
-
 def main():
     parser = argparse.ArgumentParser(description="Depth-limited image spider")
     parser.add_argument("url", help="Target URL to crawl")
