@@ -1,6 +1,6 @@
 
 undefined8 main(void)
-
+//052
 {
   ulong n;
   int iVar2;
@@ -11,7 +11,7 @@ undefined8 main(void)
   char local_4a;
   undefined1 local_49;
   char local_48 [31];
-  char local_29 [9];
+  char rslt [9];
   ulong i;
   int local_18;
   int k;
@@ -31,31 +31,30 @@ undefined8 main(void)
     ___syscall_malloc();
   }
   fflush(_stdin);
-  memset(local_29,0,9);
-  local_29[0] = '*';
+  memset(rslt,0,9);
+  rslt[0] = '*';
   local_49 = 0;
-  i = 2;
-  k = 1;
+  i = 2; // increment by 3
+  k = 1;// increment by 1
   while( true ) {
-    string_size = strlen(local_29);
+    string_size = strlen(rslt);
     n = i;
-    if (string_size < 8) {
+    if (string_size < 8) { // beak uf last
       string_size = strlen(local_48);
       if( n < string_size)
         break;
     }
     local_4c = local_48[i];
-    local_4b = local_48[i + 1];
-    local_4a = local_48[i + 2];
     iVar2 = atoi(&local_4c);
-    local_29[k] = (char)iVar2;
-    i = i + 3;
+    rslt[k] = (char)iVar2;
+    i = i + 3; // increment by 3
     k++;
   }
-  local_29[k] = '\0';
-  local_18 = strcmp(local_29,"********");
+  rslt[k] = '\0';
+  local_18 = strcmp(rslt,"********");
   if (local_18 != 0) {
     ___syscall_malloc();
   }
 }
 
+// 4252052052052052052052
